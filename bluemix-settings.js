@@ -20,6 +20,9 @@ var fs = require("fs");
 var _ = require("lodash");
 var cfenv = require("cfenv");
 
+const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
+const REGEX_ALPHA_NUM = /[^a-zA-Z0-9]/g;
+
 var appEnv = cfenv.getAppEnv();
 
 var userDir = path.join(__dirname, ".node-red");
@@ -80,9 +83,9 @@ var settings = module.exports = {
 };
 
 // Look for the attached Cloudant instance to use for storage
-settings.couchAppname = appEnv.name;
+settings.couchAppname = _sanitizeAppName(appEnv.name);
 util.log("Setting couchAppname: " + settings.couchAppname)
-settings.couchDb = process.env.NODE_RED_STORAGE_DB_NAME || appEnv.name.replace(/[^a-z0-9_$()+/-]/g, "_");
+settings.couchDb = process.env.NODE_RED_STORAGE_DB_NAME || settings.couchAppname;
 util.log("Setting CouchDb: " + settings.couchDb);
 
 
@@ -100,4 +103,9 @@ if (!couchService) {
     util.log("Using Cloudant service: " + couchService.name + " : " + settings.couchAppname);
     settings.storageModule = require("./couchstorage");
     settings.couchUrl = couchService.credentials.url;
+}
+
+function _sanitizeAppName(name) {
+    name = name || 'appname';
+    return name.toLowerCase().replace(REGEX_LEADING_ALPHA, '').replace(REGEX_ALPHA_NUM, '');
 }
