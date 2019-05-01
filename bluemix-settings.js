@@ -85,6 +85,7 @@ util.log("Setting couchAppname: " + settings.couchAppname)
 settings.couchDb = process.env.NODE_RED_STORAGE_DB_NAME || appEnv.name.replace(/[^a-z0-9_$()+/-]/g, "_");
 util.log("Setting CouchDb: " + settings.couchDb);
 
+
 var services = _.values(appEnv.getServices());
 var couchService = _.filter(services, { label: 'cloudantNoSQLDB' })[0];
 
@@ -94,6 +95,7 @@ if (!couchService) {
         util.log(" - using NODE_RED_STORAGE_NAME environment variable: " + process.env.NODE_RED_STORAGE_NAME);
     }
     // fall back to localfilesystem storage
+
 } else {
     util.log("Using Cloudant service: " + couchService.name + " : " + settings.couchAppname);
     settings.storageModule = require("./couchstorage");
