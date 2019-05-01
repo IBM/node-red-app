@@ -1,4 +1,7 @@
-Node-RED IBM Cloud Starter Application
+[![](https://img.shields.io/badge/IBM%20Cloud-powered-blue.svg)](https://cloud.ibm.com)
+![Platform](https://img.shields.io/badge/platform-nodejs-lightgrey.svg?style=flat)
+
+Node-RED Starter Application
 ====================================
 
 ### Node-RED on IBM Cloud
