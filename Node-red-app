@@ -1,0 +1,99 @@
+{
+    "id": "node-red-app",
+    "crn:v1:staging:public:resource-catalog::a/bef71ea83f3d0c18eb701256cf445eb3::template:node-red-app",
+    "url": "https://globalcatalog.test.cloud.ibm.com/api/v1/node-red-app?complete=true",
+    "name": "Node-Red-Starter",
+    "kind": "template",
+    "overview_ui": {
+        "en": {
+            "display_name": "Node-Red-Starter",
+            "long_description": "This starter kit comes pre-configured to create your own Node-RED based application that can be quickly deployed to IBM Cloud. Add services, generate and download the code, use the IBM Cloud Developer Tools CLI to run and debug locally, then deploy to Kubernetes, Cloud Foundry, or a DevOps Pipeline.",
+            "description": "A starter to run the Node-Red open-source project on IBM Cloud."
+        }
+    },
+    "images": {
+        "feature_image": "https://my9.digitalexperience.ibm.com/784a70b6-259e-41d3-a879-fa7abaf3f610/dxdam/89/89251603-c8c7-4170-aaab-3e8f55cf5f3e/node-32.svg",
+        "image": "https://my9.digitalexperience.ibm.com/784a70b6-259e-41d3-a879-fa7abaf3f610/dxdam/89/89251603-c8c7-4170-aaab-3e8f55cf5f3e/node-32.svg",
+        "medium_image": "https://my9.digitalexperience.ibm.com/784a70b6-259e-41d3-a879-fa7abaf3f610/dxdam/89/89251603-c8c7-4170-aaab-3e8f55cf5f3e/node-32.svg",
+        "small_image": "https://my9.digitalexperience.ibm.com/784a70b6-259e-41d3-a879-fa7abaf3f610/dxdam/89/89251603-c8c7-4170-aaab-3e8f55cf5f3e/node-32.svg"
+    },
+    "children_url": "https://globalcatalog.test.cloud.ibm.com/api/v1/node-red-app/%2A",
+    "disabled": false,
+    "active": true,
+    "tags": [
+        "ibm_created",
+        "template"
+    ],
+    "pricing_tags": null,
+    "provider": {
+        "name": "IBM"
+    },
+    "created": "2018-02-27T21:13:48.132Z",
+    "updated": "2018-03-26T16:40:24.44Z",
+    "metadata": {
+        "rc_compatible": false,
+        "service": {
+            "type": "",
+            "iam_compatible": false,
+            "unique_api_key": false,
+            "rc_provisionable": false,
+            "bindable": false,
+            "async_provisioning_supported": false,
+            "async_unprovisioning_supported": false,
+            "user_defined_service": null,
+            "parameters": null,
+            "extension": null,
+            "plan_updateable": false,
+            "state": "",
+            "service_check_enabled": false,
+            "test_check_interval": 0,
+            "service_key_supported": false,
+            "custom_create_page_hybrid_enabled": false
+        },
+        "plan": {
+            "bindable": false,
+            "reservable": false,
+            "allow_internal_users": false,
+            "async_provisioning_supported": false,
+            "async_unprovisioning_supported": false,
+            "test_check_interval": 0,
+            "single_scope_instance": "",
+            "service_check_enabled": false
+        },
+        "deployment": {
+            "broker": {}
+        },
+        "alias": {},
+        "template": {
+            "default_memory": 512,
+            "source": {
+                "path": "app",
+                "type": "git",
+                "url": "https://github.com/IBM/node-red-app"
+            },
+            "runtime_catalog_id": "SDK for Node.js™",
+            "cf_runtime_id": "763dcb4a-8642-4676-ae17-ca5bd032ad9e",
+            "template_id": "nodejsHelloWorld"
+        },
+        "ui": {
+            "urls": {
+                "catalog_details_url": "https://cloud.ibm.com/developer/appservice/create-app?starterKit=2a8a6e63-0c2b-3578-a552-a2fc08119a7c"
+            },
+            "end_of_service_time": "0001-01-01T00:00:00Z"
+        },
+        "pricing": {
+            "origin": "pricing_catalog",
+            "url": "https://globalcatalog.test.cloud.ibm.com/api/v1/node-red-app/pricing",
+            "starting_price": {},
+            "metrics": null,
+            "ibm_pricing": true
+        },
+        "sla": {
+            "dr": {
+                "dr": false
+            }
+        },
+        "callbacks": {},
+        "version": "1.0"
+    }
+}
