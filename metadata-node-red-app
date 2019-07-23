@@ -1,7 +1,7 @@
 {
     "id": "node-red-app",
     "crn:v1:staging:public:resource-catalog::a/bef71ea83f3d0c18eb701256cf445eb3::template:node-red-app",
-    "url": "https://globalcatalog.test.cloud.ibm.com/api/v1/node-red-app?complete=true",
+    "url": "https://globalcatalog.cloud.ibm.com/api/v1/node-red-app?complete=true",
     "name": "Node-Red-Starter",
     "kind": "template",
     "overview_ui": {
