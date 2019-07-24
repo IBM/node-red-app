@@ -83,7 +83,7 @@
         },
         "pricing": {
             "origin": "pricing_catalog",
-            "url": "https://globalcatalog.test.cloud.ibm.com/api/v1/node-red-app/pricing",
+            "url": "https://globalcatalog.cloud.ibm.com/api/v1/node-red-app/pricing",
             "starting_price": {},
             "metrics": null,
             "ibm_pricing": true
