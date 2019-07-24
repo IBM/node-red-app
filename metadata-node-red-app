@@ -17,7 +17,7 @@
         "medium_image": "https://my9.digitalexperience.ibm.com/784a70b6-259e-41d3-a879-fa7abaf3f610/dxdam/6f/6f46e881-9b5c-4c9c-81b9-ab5401e513c2/Node-Red_50x50.svg",
         "small_image": "https://my9.digitalexperience.ibm.com/784a70b6-259e-41d3-a879-fa7abaf3f610/dxdam/6f/6f46e881-9b5c-4c9c-81b9-ab5401e513c2/Node-Red_50x50.svg"
     },
-    "children_url": "https://globalcatalog.test.cloud.ibm.com/api/v1/node-red-app/%2A",
+    "children_url": "https://globalcatalog.cloud.ibm.com/api/v1/node-red-app/%2A",
     "disabled": false,
     "active": true,
     "tags": [
