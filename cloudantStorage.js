@@ -1,5 +1,5 @@
 /**
- * Copyright 2014, 2017, 2019 IBM Corp.
+ * Copyright 2014, 2019 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
  * limitations under the License.
  **/
 
-var nano = require('nano');
-var when = require('when');
+var Cloudant = require('@cloudant/cloudant');
 var util = require('util');
 var fs = require('fs');
 
@@ -37,29 +36,29 @@ function prepopulateFlows(resolve) {
                 try {
                     var flow = fs.readFileSync(__dirname + "/defaults/flow.json", "utf8");
                     var flows = JSON.parse(flow);
-                    util.log("[couchstorage] Installing default flow");
-                    promises.push(couchstorage.saveFlows(flows));
+                    util.log("[cloudantStorage] Installing default flow");
+                    promises.push(cloudantStorage.saveFlows(flows));
                 } catch (err2) {
-                    util.log("[couchstorage] Failed to save default flow");
+                    util.log("[cloudantStorage] Failed to save default flow");
                     util.log(err2);
                 }
             } else {
-                util.log("[couchstorage] No default flow found");
+                util.log("[cloudantStorage] No default flow found");
             }
             if (fs.existsSync(__dirname + "/defaults/flow_cred.json")) {
                 try {
                     var cred = fs.readFileSync(__dirname + "/defaults/flow_cred.json", "utf8");
                     var creds = JSON.parse(cred);
-                    util.log("[couchstorage] Installing default credentials");
-                    promises.push(couchstorage.saveCredentials(creds));
+                    util.log("[cloudantStorage] Installing default credentials");
+                    promises.push(cloudantStorage.saveCredentials(creds));
                 } catch (err2) {
-                    util.log("[couchstorage] Failed to save default credentials");
+                    util.log("[cloudantStorage] Failed to save default credentials");
                     util.log(err2);
                 }
             } else {
-                util.log("[couchstorage] No default credentials found");
+                util.log("[cloudantStorage] No default credentials found");
             }
-            when.settle(promises).then(function () {
+            Promise.all(promises).then(function () {
                 resolve();
             });
         } else {
@@ -70,16 +69,19 @@ function prepopulateFlows(resolve) {
 }
 
 
-var couchstorage = {
+var cloudantStorage = {
     init: function (_settings) {
-        settings = _settings;
-        var couchDb = nano(settings.couchUrl);
-        appname = settings.couchAppname || require('os').hostname();
-        var dbname = settings.couchDb || "nodered";
-        util.log("dbname: " + dbname);
+        settings = _settings.cloudantService || {};
+        if (!settings) {
+            var err = Promise.reject("cloudantStorage settings not found");
+            err.catch(err => {});
+            return err;
+        }
+        var couchDb = Cloudant({ vcapInstanceName: settings.name, vcapServices: JSON.parse(process.env.VCAP_SERVICES) });
+        appname = settings.prefix || require('os').hostname();
+        var dbname = settings.db || "nodered";
 
-
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             couchDb.db.get(dbname, function (err, body) {
                 if (err) {
                     couchDb.db.create(dbname, function (err, body) {
@@ -137,7 +139,7 @@ var couchstorage = {
 
     getFlows: function () {
         var key = appname + "/" + "flow";
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             flowDb.get(key, function (err, doc) {
                 if (err) {
                     if (err.statusCode != 404) {
@@ -155,7 +157,7 @@ var couchstorage = {
 
     saveFlows: function (flows) {
         var key = appname + "/" + "flow";
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             var doc = { _id: key, flow: flows };
             if (currentFlowRev) {
                 doc._rev = currentFlowRev;
@@ -173,7 +175,7 @@ var couchstorage = {
 
     getCredentials: function () {
         var key = appname + "/" + "credential";
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             flowDb.get(key, function (err, doc) {
                 if (err) {
                     if (err.statusCode != 404) {
@@ -191,7 +193,7 @@ var couchstorage = {
 
     saveCredentials: function (credentials) {
         var key = appname + "/" + "credential";
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             var doc = { _id: key, credentials: credentials };
             if (currentCredRev) {
                 doc._rev = currentCredRev;
@@ -209,7 +211,7 @@ var couchstorage = {
 
     getSettings: function () {
         var key = appname + "/" + "settings";
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             flowDb.get(key, function (err, doc) {
                 if (err) {
                     if (err.statusCode != 404) {
@@ -227,7 +229,7 @@ var couchstorage = {
 
     saveSettings: function (settings) {
         var key = appname + "/" + "settings";
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             var doc = { _id: key, settings: settings };
             if (currentSettingsRev) {
                 doc._rev = currentSettingsRev;
@@ -245,7 +247,7 @@ var couchstorage = {
 
     getAllFlows: function () {
         var key = [appname, "flow"];
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             flowDb.view('library', 'flow_entries_by_app_and_type', { key: key }, function (e, data) {
                 if (e) {
                     reject(e.toString());
@@ -275,7 +277,7 @@ var couchstorage = {
             fn = "/" + fn;
         }
         var key = appname + "/lib/flow" + fn;
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             flowDb.get(key, function (err, data) {
                 if (err) {
                     reject(err);
@@ -291,7 +293,7 @@ var couchstorage = {
             fn = "/" + fn;
         }
         var key = appname + "/lib/flow" + fn;
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             var doc = { _id: key, data: data };
             flowDb.get(key, function (err, d) {
                 if (d) {
@@ -317,10 +319,10 @@ var couchstorage = {
         }
 
         if (libraryCache[key]) {
-            return when.resolve(libraryCache[key]);
+            return Promise.resolve(libraryCache[key]);
         }
 
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             flowDb.get(key, function (err, doc) {
                 if (err) {
                     if (path.substr(-1, 1) == "/") {
@@ -358,7 +360,7 @@ var couchstorage = {
     },
     saveLibraryEntry: function (type, path, meta, body) {
 
-        var p = path.split("/");    // strip multiple slash   
+        var p = path.split("/");    // strip multiple slash
         p = p.filter(Boolean);
         path = p.slice(0, p.length).join("/")
 
@@ -366,7 +368,7 @@ var couchstorage = {
             path = "/" + path;
         }
         var key = appname + "/lib/" + type + path;
-        return when.promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
             var doc = { _id: key, meta: meta, body: body };
             flowDb.get(key, function (err, d) {
                 if (d) {
@@ -390,4 +392,4 @@ var couchstorage = {
     }
 };
 
-module.exports = couchstorage;
+module.exports = cloudantStorage;
