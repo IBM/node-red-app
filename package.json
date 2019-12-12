@@ -7,6 +7,7 @@
         "body-parser": "1.x",
         "cfenv": "^1.2.2",
         "express": "4.x",
+        "ibm-cloud-env": "^0.2.6",
         "http-shutdown": "1.2.0",
         "lodash": "^4.17.11",
         "nano": "^8.0.1",

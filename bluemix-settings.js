@@ -19,6 +19,8 @@ var util = require("util");
 var fs = require("fs");
 var _ = require("lodash");
 var cfenv = require("cfenv");
+var IBMCloudEnv = require('ibm-cloud-env');
+IBMCloudEnv.init(path.resolve(__dirname, '/config/mappings.json'));
 
 const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
 const REGEX_ALPHA_NUM = /[^a-zA-Z0-9]/g;
@@ -88,21 +90,17 @@ util.log("Setting couchAppname: " + settings.couchAppname)
 settings.couchDb = process.env.NODE_RED_STORAGE_DB_NAME || settings.couchAppname;
 util.log("Setting CouchDb: " + settings.couchDb);
 
+var cloudantUrl = IBMCloudEnv.getString("cloudant_url");
 
-var services = _.values(appEnv.getServices());
-var couchService = _.filter(services, { label: 'cloudantNoSQLDB' })[0];
-
-if (!couchService) {
-    util.log("Failed to find Cloudant service with label cloudantNoSQLDB ");
+if (!cloudantUrl) {
+    util.log("Failed to find Cloudant url");
     if (process.env.NODE_RED_STORAGE_NAME) {
         util.log(" - using NODE_RED_STORAGE_NAME environment variable: " + process.env.NODE_RED_STORAGE_NAME);
     }
     // fall back to localfilesystem storage
-
 } else {
-    util.log("Using Cloudant service: " + couchService.name + " : " + settings.couchAppname);
     settings.storageModule = require("./couchstorage");
-    settings.couchUrl = couchService.credentials.url;
+    settings.couchUrl = cloudantUrl;
 }
 
 function _sanitizeAppName(name) {
