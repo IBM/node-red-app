@@ -33,8 +33,7 @@
                         are a couple of tasks you should do:</p>
                     <ul>
                         <li>Secure your Node-RED editor</li>
-                        <li>Optionally enable <a href="https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/" target="_blank">Application Metrics for Node.js</a> monitoring</li>
-                        <li>Browse available IBM Cloud nodes</li>
+                        <li>Learn how to install additional nodes</li>
                     </ul>
                 </div>
                 <div class="page page-2">
@@ -58,46 +57,23 @@
                     </ul>
                 </div>
                 <div class="page page-3">
-                    <h3>Optionally enable <a href="https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/" target="_blank">Application Metrics for Node.js</a> monitoring</h3>
-                    <p> Enabling this will allow you to monitor your Node-RED flows for metrics such as
-                        CPU usage, Memory usage, Heap usage, Event Loop useage, and HTTP request and response
-                        messages using a dashboard available at:</p>
-                    <p id="appmetrics"></p>
-                    <div><label class="checkboxLabel" for="enableAppmetrics"><input id="enableAppmetrics" type="checkbox"> Tick this box to confirm you want to enable
-                          <a href="https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/" target="_blank">Application Metrics for Node.js</a>
-                    </label></div>
+                    <h3>Learn how to install additional nodes</h3>
+                    <p> Node-RED provides a <a href="https://flows.nodered.org" target="_blank">huge catalog of extra nodes</a> you can install into the editor.</p>
+                    <p> Many of these nodes can be installed directly from the editor's palette manager feature. However that can cause issues due to the limited
+                        memory of the default Node-RED starter application.</p>
+                    <p> The <i>recommended approach</i>  is to edit your application's <code>package.json</code> file to include the additional node modules and then redeploy the application.
+                        This can be done using the Continuous Delivery feature on the application's IBM Cloud dashboard.</p>
+                    <p> For more information, follow <a href="https://developer.ibm.com/tutorials/how-to-create-a-node-red-starter-application/" target="_blank">this tutorial on IBM Developer</a>.</p>
                 </div>
                 <div class="page page-4">
-                    <h3>Browse available IBM Cloud nodes</h3>
-                    <p>There are lots of nodes available from the community that
-                        can be used to add more capabilities to your application. The list below is just a small selection.</p>
-                    <p>You can find many more nodes on the <a target="_blank" href="https://flows.nodered.org">Flow Library</a>.</p>
-                    <p>You can use the Palette Manager built into editor to search for and install nodes.
-                        Alternatively, you can also edit your application's
-                        <code>package.json</code> file and adding them to the
-                        <code>dependencies</code> section.
-                    </p>
-                    <div class="nodelistContainer">
-                        <ul class="nodelist">
-                            <li><a target="_blank" href="https://flows.nodered.org/node/node-red-dashboard"><h4>node-red-dashboard</h4><p>Quickly create dashboards driven by Node-RED</p></a></li>
-                            <li><a target="_blank" href="https://flows.nodered.org/node/node-red-contrib-ibm-wiotp-device-ops"><h4>node-red-contrib-ibm-wiotp-device-ops</h4><p>Perform device and gateway operations using the Watson IoT Platform</p></a></li>
-                            <li><a target="_blank" href="https://flows.nodered.org/node/node-red-contrib-iot-virtual-device"><h4>node-red-contrib-iot-virtual-device</h4><p>Simulate device behavior and use it to run many device instances</p></a></li>
-                            <li><a target="_blank" href="https://flows.nodered.org/node/node-red-contrib-objectstore"><h4>node-red-contrib-objectstore</h4><p>Store, delete and restore objects in the ObjectStore service</p></a></li>
-                            <li><a target="_blank" href="https://flows.nodered.org/node/node-red-contrib-bluemix-hdfs"><h4>node-red-contrib-bluemix-hdfs</h4><p>Create and update files using HDFS for Analytics for Apache Hadoop service</p></a></li>
-                            <li><a target="_blank" href="https://flows.nodered.org/node/node-red-contrib-ibmpush"><h4>node-red-contrib-ibmpush</h4><p>Send push notifications to mobile devices using the Push Notification service</p></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="page page-5">
                     <h3>Finish the install</h3>
                     <p>You have made the following selections:</p>
                     <ul id="summary"></ul>
-                    <p>You can change these settings at any time by setting the following environment variables via the Bluemix console:</p>
+                    <p>You can change these settings at any time by setting the following environment variables via the IBM Cloud console:</p>
                     <ul>
                         <li><code>NODE_RED_USERNAME</code> - the username</li>
                         <li><code>NODE_RED_PASSWORD</code> - the password</li>
                         <li><code>NODE_RED_GUEST_ACCESS</code> - if set to `true`, allows anyone read-only access to the editor</li>
-                        <li><code>NODE_RED_USE_APPMETRICS</code> - if set to `true`, enables the <a href="https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/" target="_blank">Application Metrics for Node.js</a> dashboard for monitoring your Node-RED flows</li>
                     </ul>
                 </div>
 
@@ -111,8 +87,6 @@
                     <div class="progress-step progress-step-2"></div>
                     <div class="progress-bar progress-bar-3"></div>
                     <div class="progress-step progress-step-3"></div>
-                    <div class="progress-bar progress-bar-4"></div>
-                    <div class="progress-step progress-step-4"></div>
                 </div>
                 <div class="btn-group">
                     <button id="btn-prev">Previous</button>
@@ -125,7 +99,7 @@
         <script>
         $(function() {
             var currentPage = 0;
-            var totalPages = 5;
+            var totalPages = 4;
             var passwordValid = false;
 
             var password;
@@ -165,11 +139,7 @@
                     currentPage++;
                     if (currentPage === 1) {
                         $("#secureOption-password").val(password);
-                    } else if (currentPage === 2) {
-                        var appmetrics = $("#appmetrics");
-                        appmetrics.empty();
-                        $("<span>" + location.origin + "/appmetrics-dash</span>").appendTo(appmetrics);
-                    } else if (currentPage === 4) {
+                    } else if (currentPage === 3) {
                         var summary = $("#summary");
                         summary.empty();
                         var v = $('input[name=secureOption]:checked').val();
@@ -183,9 +153,6 @@
                         } else {
                             $("<li>None - please go back and make a selection</li>").appendTo(summary);
 
-                        }
-                        if ($("#enableAppmetrics").prop("checked")) {
-                            $('<li>Enable <a href="https://developer.ibm.com/node/monitoring-post-mortem/application-metrics-node-js/" target="_blank">Application Metrics for Node.js</a> monitoring</li>').appendTo(summary);
                         }
                     }
                     $(".body").animate({
@@ -205,10 +172,6 @@
                     currentPage--;
                     if (currentPage === 1) {
                         $("#secureOption-password").val(password);
-                    } else if (currentPage === 2) {
-                        var appmetrics = $("#appmetrics");
-                        appmetrics.empty();
-                        $("<span>" + location.origin + "/appmetrics-dash</span>").appendTo(appmetrics);
                     }
                     $(".body").animate({
                         left: "-"+currentPage+"00%"
@@ -276,7 +239,6 @@
                         allowAnonymous: $("#secureOption-anonymous").prop("checked")
                     };
                 }
-                config.useAppmetrics = $("#enableAppmetrics").prop("checked");
                 $(".body").hide();
                 $(".toolbar").hide();
                 $(".deploy").show();
