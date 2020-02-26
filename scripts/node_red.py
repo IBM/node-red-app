@@ -28,8 +28,9 @@ for elem in h3_elems:
 
 if is_setup_wizard:
     print("Encountered initial setup wizard")
+    next_button = driver.find_element_by_xpath("//button[@placeholder='next']") # Locate the Next button
 else:
-    print("Encountered landing page")
+    print("Checking if we've encountered the landing page")
     found_node_red_heading = False
     h1_elems = driver.find_elements_by_xpath('//h1')
     for elem in h1_elems:
