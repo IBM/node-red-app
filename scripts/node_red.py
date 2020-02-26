@@ -7,19 +7,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-date = datetime.datetime.now().strftime("%Y-%m-%d-%H%M:%S:%f")
-username = "devx-skit-governance"
-if "PAGERDUTY_API_TOKEN" in os.environ:
-    # using a secured environment variable to avoid exposure
-    password =  os.environ["PAGERDUTY_API_TOKEN"]
-else:
-    password = "governator"
-
-# Do an action on the app's landing page
-options = Options()
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
 
 def validate_landing_page():
     print("Checking if we've encountered the landing page")
@@ -51,6 +38,18 @@ def validate_landing_page():
     if not found_editor_link:
         sys.exit("Experience Test Failed: could not find landing page editor link")
 
+
+username = "devx-skit-governance"
+if "PAGERDUTY_API_TOKEN" in os.environ:
+    # using a secured environment variable to avoid exposure
+    password =  os.environ["PAGERDUTY_API_TOKEN"]
+else:
+    password = "governator"
+
+options = Options()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(options=options)
 try:
     driver.get(os.environ["APP_URL"]); # Open a browser to the app's landing page
@@ -61,23 +60,29 @@ try:
         if elem.text == "Welcome to your new Node-RED instance on IBM Cloud":
             is_setup_wizard = True
             break
+    
     if is_setup_wizard:
         print("Encountered initial setup wizard")
         next_button = driver.find_element_by_xpath("//button[@id='btn-next']") # Locate the Next button
         next_button.click()
 
         # set up as secure
+        print("Setting up app with security enabled")
         secure_editor_radio_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-next")))
         secure_editor_radio_button.click()
-        username_field = driver.find_element_by_xpath("//input[@input='secureOption-username']")
+
+        print("Entering username and password")
+        username_field = driver.find_element_by_xpath("//input[@id='secureOption-username']")
         username_field.send_keys(username)
-        password_field = driver.find_element_by_xpath("//input[@input='secureOption-password']")
+        password_field = driver.find_element_by_xpath("//input[@id='secureOption-password']")
         password_field.send_keys(password)
 
+        print("Navigating to end of wizard")
         next_button.click() # go to next panel
         next_button.click() # skip learning panel
-        
-        finish_button = driver.find_element_by_xpath("//button[@id='btn-finish']")
+
+        print("Finishing setup wizard")
+        finish_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-finish")))
         finish_button.click()
 
         time.sleep(15)
