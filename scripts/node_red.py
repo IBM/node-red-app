@@ -72,9 +72,9 @@ try:
         secure_editor_radio_button.click()
 
         print("Entering username and password")
-        username_field = driver.find_element_by_xpath("//input[@id='secureOption-username']")
+        username_field = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "secureOption-username")))
         username_field.send_keys(username)
-        password_field = driver.find_element_by_xpath("//input[@id='secureOption-password']")
+        password_field = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "secureOption-password")))
         password_field.send_keys(password)
 
         print("Navigating to end of wizard")
