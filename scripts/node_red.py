@@ -12,6 +12,7 @@ def validate_landing_page():
     print("Checking if we've encountered the landing page")
     found_node_red_heading = False
     h1_elems = driver.find_elements_by_xpath('//h1')
+    print("Found {} h1 elements".format(len(h1_elems)))
     for elem in h1_elems:
         if elem.text == "Node-RED":
             found_node_red_heading = True
