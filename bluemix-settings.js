@@ -17,9 +17,11 @@
 var path = require("path");
 var util = require("util");
 var fs = require("fs");
-
 var cfenv = require("cfenv");
 var appEnv = cfenv.getAppEnv();
+var IBMCloudEnv = require('ibm-cloud-env');
+IBMCloudEnv.init(path.resolve(__dirname, '/config/mappings.json'));
+var cloudantUrl = IBMCloudEnv.getString("cloudant_url");
 
 const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
 const REGEX_ALPHA_NUM = /[^a-zA-Z0-9]/g;
@@ -92,30 +94,35 @@ var settings = module.exports = {
 var storageServiceName;
 var storageServiceDetails;
 
-
-if (process.env.NODE_RED_STORAGE_NAME) {
-    // A service has been identifed by the NODE_RED_STORAGE_NAME env var.
-    //  - check to see if the named service exists
-    storageServiceDetails = appEnv.getService(process.env.NODE_RED_STORAGE_NAME);
-    if (!storageServiceDetails) {
-        util.log("Failed to find Cloudant service: "+process.env.NODE_RED_STORAGE_NAME+ " (NODE_RED_STORAGE_NAME)");
+if (!cloudantUrl) {
+    util.log("Failed to find Cloudant url");
+    if (process.env.NODE_RED_STORAGE_NAME) {
+        // A service has been identifed by the NODE_RED_STORAGE_NAME env var.
+        //  - check to see if the named service exists
+        storageServiceDetails = appEnv.getService(process.env.NODE_RED_STORAGE_NAME);
+        if (!storageServiceDetails) {
+            util.log("Failed to find Cloudant service: "+process.env.NODE_RED_STORAGE_NAME+ " (NODE_RED_STORAGE_NAME)");
+        } else {
+            storageServiceName = process.env.NODE_RED_STORAGE_NAME
+        }
     } else {
-        storageServiceName = process.env.NODE_RED_STORAGE_NAME
-    }
-} else {
-    // No couch service specified by env var - look at the attached services
-    var candidateServices = Object.values(appEnv.getServices()).filter(app => app.label === "cloudantNoSQLDB");
-    if (candidateServices.length === 0) {
-        util.log("No Cloudant service found");
-    } else {
-        // Use the first in the list - but warn if there are multiple incase we
-        // are using the 'wrong' one.
-        storageServiceName = candidateServices[0].name;
-        storageServiceDetails = candidateServices[0];
-        if (candidateServices.length > 1) {
-            util.log("Multiple Cloudant services found - using "+storageServiceName+". Use NODE_RED_STORAGE_NAME env var to specify the required instance.");
+        // No couch service specified by env var - look at the attached services
+        var candidateServices = Object.values(appEnv.getServices()).filter(app => app.label === "cloudantNoSQLDB");
+        if (candidateServices.length === 0) {
+            util.log("No Cloudant service found");
+        } else {
+            // Use the first in the list - but warn if there are multiple incase we
+            // are using the 'wrong' one.
+            storageServiceName = candidateServices[0].name;
+            storageServiceDetails = candidateServices[0];
+            if (candidateServices.length > 1) {
+                util.log("Multiple Cloudant services found - using "+storageServiceName+". Use NODE_RED_STORAGE_NAME env var to specify the required instance.");
+            }
         }
     }
+} else {
+    settings.storageModule = require("./couchstorage");
+    settings.couchUrl = cloudantUrl;
 }
 
 if (!storageServiceName) {
