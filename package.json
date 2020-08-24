@@ -5,7 +5,6 @@
         "@cloudant/cloudant": "^4.2.4",
         "bcrypt": "^5.0.0",
         "body-parser": "1.x",
-        "cfenv": "^1.2.3",
         "ibm-cloud-env": "^0",
         "express": "4.x",
         "http-shutdown": "1.2.2",
