@@ -17,10 +17,8 @@
 var path = require("path");
 var util = require("util");
 var fs = require("fs");
-var cfenv = require("cfenv");
-var appEnv = cfenv.getAppEnv();
 var IBMCloudEnv = require('ibm-cloud-env');
-IBMCloudEnv.init(path.resolve(__dirname, '/config/mappings.json'));
+IBMCloudEnv.init('/server/config/mappings.json');
 var cloudantUrl = IBMCloudEnv.getString("cloudant_url");
 
 const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
@@ -88,8 +86,6 @@ var settings = module.exports = {
     }
 };
 
-
-
 // Identify the Cloudant storage instance the application should be using.
 var storageServiceName;
 var storageServiceDetails;
@@ -99,7 +95,7 @@ if (!cloudantUrl) {
     if (process.env.NODE_RED_STORAGE_NAME) {
         // A service has been identifed by the NODE_RED_STORAGE_NAME env var.
         //  - check to see if the named service exists
-        storageServiceDetails = appEnv.getService(process.env.NODE_RED_STORAGE_NAME);
+        storageServiceDetails = IBMCloudEnv.getString("node_red_storage");
         if (!storageServiceDetails) {
             util.log("Failed to find Cloudant service: "+process.env.NODE_RED_STORAGE_NAME+ " (NODE_RED_STORAGE_NAME)");
         } else {
@@ -107,8 +103,8 @@ if (!cloudantUrl) {
         }
     } else {
         // No couch service specified by env var - look at the attached services
-        var candidateServices = Object.values(appEnv.getServices()).filter(app => app.label === "cloudantNoSQLDB");
-        if (candidateServices.length === 0) {
+        var candidateServices = IBMCloudEnv.getString('cloudantNoSQLDB');
+        if (!candidateServices) {
             util.log("No Cloudant service found");
         } else {
             // Use the first in the list - but warn if there are multiple incase we
@@ -121,8 +117,7 @@ if (!cloudantUrl) {
         }
     }
 } else {
-    settings.storageModule = require("./couchstorage");
-    settings.couchUrl = cloudantUrl;
+    settings.cloudantUrl = cloudantUrl;
 }
 
 if (!storageServiceName) {
@@ -136,9 +131,9 @@ if (!storageServiceName) {
         // The URL to use
         url: storageServiceDetails.credentials.url,
         // The name of the database to use
-        db: process.env.NODE_RED_STORAGE_DB_NAME || _sanitizeAppName(appEnv.name),
+        db: process.env.NODE_RED_STORAGE_DB_NAME || _sanitizeAppName(IBMCloudEnv.getString("node_red_storage_db")),
         // The prefix for all document names stored by this instance.
-        prefix: process.env.NODE_RED_STORAGE_APP_NAME || _sanitizeAppName(appEnv.name)
+        prefix: process.env.NODE_RED_STORAGE_APP_NAME || _sanitizeAppName(IBMCloudEnv.getString("node_red_storage_app"))
     }
 
     util.log("Using Cloudant service: "+storageServiceName+" db:"+settings.cloudantService.db+" prefix:"+settings.cloudantService.prefix);
