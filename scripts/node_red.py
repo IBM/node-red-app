@@ -83,7 +83,7 @@ try:
         next_button.click() # skip learning panel
 
         print("Finishing setup wizard")
-        finish_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-finish")))
+        finish_button = driver.find_element_by_xpath("//button[@id='btn-finish']") # Locate the Finish button
         finish_button.click()
 
         time.sleep(15)
