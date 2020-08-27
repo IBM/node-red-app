@@ -51,6 +51,7 @@ options = Options()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
+options.add_argument('window-size=1200x600')
 driver = webdriver.Chrome(options=options)
 try:
     driver.get(os.environ["APP_URL"]); # Open a browser to the app's landing page
@@ -83,7 +84,7 @@ try:
         next_button.click() # skip learning panel
 
         print("Finishing setup wizard")
-        finish_button = driver.find_element_by_xpath("//button[@id='btn-finish']") # Locate the Finish button
+        finish_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-finish")))
         finish_button.click()
 
         time.sleep(15)
