@@ -1,8 +1,9 @@
 {
+  "version": 1,
   "cloudant_url": {
     "searchPatterns": [
-      "cloudfoundry:$['cloudant'][0].credentials.uri",
-      "env:service_cloudant:$.uri",
+      "cloudfoundry:$['cloudant'][0].credentials.url",
+      "env:service_cloudant:$.url",
       "env:cloudant_url",
       "env:CLOUDANT_URL"
     ]
