@@ -20,6 +20,16 @@ var fs = require("fs");
 var IBMCloudEnv = require('ibm-cloud-env');
 IBMCloudEnv.init('/server/config/mappings.json');
 var cloudantUrl = IBMCloudEnv.getString("cloudant_url");
+if (cloudantUrl) {
+    util.log("Found Cloudant URL on first try:");
+    util.log(cloudantUrl);
+} else {
+    const CloudantSDK = require('@cloudant/cloudant');
+    const cloudantUrl = new CloudantSDK(IBMCloudEnv.getString('cloudant_url'));
+    util.log("Second try for Cloudant URL:");
+    util.log(cloudantUrl);
+}
+
 
 const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
 const REGEX_ALPHA_NUM = /[^a-zA-Z0-9]/g;
