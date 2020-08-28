@@ -1,0 +1,4 @@
+{
+  "port": 3000,
+  "cloudant_url": "<REPLACE_ME_FOR_LOCAL_DEV>"
+}

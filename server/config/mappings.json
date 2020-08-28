@@ -5,7 +5,15 @@
       "cloudfoundry:$['cloudant'][0].credentials.url",
       "env:service_cloudant:$.url",
       "env:cloudant_url",
-      "env:CLOUDANT_URL"
+      "env:CLOUDANT_URL",
+      "file:/server/localdev-config.json:$.cloudant_url"
+    ]
+  },
+  "cloudant_services": {
+    "searchPatterns": [
+      "cloudfoundry:$['cloudantNoSQLDB']",
+      "env:cloudant_services",
+      "file:/server/localdev-config.json:$.cloudant_services"
     ]
   },
   "node_red_storage": {
@@ -31,9 +39,11 @@
   },
   "node_red_user": {
     "searchPatterns": [
-      "cloudfoundry:NODE_RED_USERNAME",
+      "cloudfoundry:cloudant",
+      "env:cloudant_credentials",
       "env:node_red_username",
-      "env:NODE_RED_USERNAME"
+      "env:NODE_RED_USERNAME",
+      "file:/server/localdev-config.json:cloudant_credentials"
     ]
   },
   "node_red_password": {
