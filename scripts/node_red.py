@@ -73,9 +73,15 @@ try:
             EC.presence_of_element_located((By.ID, "btn-next")))
         secure_editor_radio_button.click()
 
+        print("Checking page source after clicking 'Next' button...")
+        html = driver.page_source
+        print(html)
         print("Entering username and password")
         username_field = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.ID, "secureOption-username")))
+        print("Checking page source before entering Username...")
+        html2 = driver.page_source
+        print(html2)
         username_field.send_keys(username)
         password_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "secureOption-password")))
