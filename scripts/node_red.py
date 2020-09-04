@@ -86,6 +86,9 @@ try:
         password_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "secureOption-password")))
         password_field.send_keys(password)
+        print("Checking page source after entering Password...")
+        html3 = driver.page_source
+        print(html3)
 
         print("Navigating to end of wizard")
         next_button.click()  # go to next panel
@@ -93,6 +96,9 @@ try:
 
         print("Finishing setup wizard")
         finish_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-finish")))
+        print("Checking page source before clicking 'Finish' button...")
+        html4 = driver.page_source
+        print(html4)
         finish_button.click()
 
         time.sleep(15)
