@@ -3,7 +3,7 @@ RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash -
 RUN yum install -y nodejs make gcc-c++
 RUN mkdir /app
 WORKDIR /app
-COPY package.json package-lock.json .
+COPY package.json package-lock.json ./
 RUN npm install --only=prod
 COPY . .
 ENV NODE_ENV production
