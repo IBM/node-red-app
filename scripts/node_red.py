@@ -74,7 +74,7 @@ try:
         secure_editor_radio_button.click()
 
         print("Entering username and password")
-        username_field = WebDriverWait(driver, 10).until(
+        username_field = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.ID, "secureOption-username")))
         username_field.send_keys(username)
         password_field = WebDriverWait(driver, 10).until(
