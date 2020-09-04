@@ -64,7 +64,8 @@ try:
 
     if is_setup_wizard:
         print("Encountered initial setup wizard")
-        next_button = driver.find_element_by_xpath("//button[@id='btn-next']")  # Locate the Next button
+        # next_button = driver.find_element_by_xpath("//button[@id='btn-next']")  # Locate the Next button
+        next_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-next")))
         next_button.click()
 
         # set up as secure
@@ -73,20 +74,15 @@ try:
             EC.presence_of_element_located((By.ID, "btn-next")))
         secure_editor_radio_button.click()
 
-        print("Checking page source after clicking 'Next' button...")
-        html = driver.page_source
-        print(html)
         print("Entering username and password")
         username_field = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.ID, "secureOption-username")))
-        print("Checking page source before entering Username...")
-        html2 = driver.page_source
-        print(html2)
         username_field.send_keys(username)
         password_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "secureOption-password")))
         password_field.send_keys(password)
-        print("Checking page source after entering Password...")
+        time.sleep(10)
+        print("Checking page source after entering Password and waiting 10 seconds...")
         html3 = driver.page_source
         print(html3)
 
