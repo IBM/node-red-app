@@ -65,7 +65,11 @@ try:
     if is_setup_wizard:
         print("Encountered initial setup wizard")
         # next_button = driver.find_element_by_xpath("//button[@id='btn-next']")  # Locate the Next button
+        # next_button = WebDriverWait(driver, 10).until(EC.elementToBeClickable(By.xpath("//button[@id='btn-next']")))
         next_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-next")))
+        print("Checking page source for 'Next' button...")
+        html = driver.page_source
+        print(html)
         next_button.click()
 
         # set up as secure
