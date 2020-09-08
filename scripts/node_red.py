@@ -68,8 +68,8 @@ try:
         print("Encountered initial setup wizard")
         # next_button = driver.find_element_by_xpath("//button[@id='btn-next']")  # Locate the Next button
         # next_button = WebDriverWait(driver, 10).until(EC.elementToBeClickable(By.xpath("//button[@id='btn-next']")))
-        next_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-next")))
-        # next_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//button[@id='btn-next']")))
+        # next_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-next")))
+        next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-next']")))
         print("Checking page source for 'Next' button...")
         html = driver.page_source
         print(html)
@@ -78,7 +78,7 @@ try:
         # set up as secure
         print("Setting up app with security enabled")
         secure_editor_radio_button = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, "secureOption-enabled")))
+            EC.element_to_be_clickable((By.ID, "secureOption-enabled")))
         secure_editor_radio_button.click()
 
         print("Entering username and password")
