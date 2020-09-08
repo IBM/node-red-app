@@ -84,9 +84,11 @@ try:
         print("Entering username and password")
         username_field = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.ID, "secureOption-username")))
+        print("Username: {}".format(username))
         username_field.send_keys(username)
         password_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "secureOption-password")))
+        print("Password: {}".format(password))
         password_field.send_keys(password)
         time.sleep(10)
         print("Checking page source after entering Password and waiting 10 seconds...")
@@ -98,7 +100,7 @@ try:
         next_button.click()  # skip learning panel
 
         print("Finishing setup wizard")
-        finish_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-finish")))
+        finish_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "btn-finish")))
         print("Checking page source before clicking 'Finish' button...")
         html4 = driver.page_source
         print(html4)
