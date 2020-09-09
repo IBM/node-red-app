@@ -43,10 +43,8 @@ def validate_landing_page():
 username = "devx-skit-governance"
 if "PAGERDUTY_API_TOKEN" in os.environ:
     # using a secured environment variable to avoid exposure
-    print("Using PagerDuty API Token for password.")
-    password = "governator"
+    password = os.environ["PAGERDUTY_API_TOKEN"]
 else:
-    print("Using default password.")
     password = "governator"
 
 options = Options()
@@ -66,13 +64,7 @@ try:
 
     if is_setup_wizard:
         print("Encountered initial setup wizard")
-        # next_button = driver.find_element_by_xpath("//button[@id='btn-next']")  # Locate the Next button
-        # next_button = WebDriverWait(driver, 10).until(EC.elementToBeClickable(By.xpath("//button[@id='btn-next']")))
         next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "btn-next")))
-        # next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@id='btn-next']")))
-        print("Checking page source for 'Next' button...")
-        html = driver.page_source
-        print(html)
         next_button.click()
 
         # set up as secure
@@ -84,16 +76,10 @@ try:
         print("Entering username and password")
         username_field = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.ID, "secureOption-username")))
-        print("Username: {}".format(username))
         username_field.send_keys(username)
         password_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "secureOption-password")))
-        print("Password: {}".format(password))
         password_field.send_keys(password)
-        time.sleep(10)
-        print("Checking page source after entering Password and waiting 10 seconds...")
-        html3 = driver.page_source
-        print(html3)
 
         print("Navigating to end of wizard")
         next_button.click()  # go to next panel
@@ -101,9 +87,6 @@ try:
 
         print("Finishing setup wizard")
         finish_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "btn-finish")))
-        print("Checking page source before clicking 'Finish' button...")
-        html4 = driver.page_source
-        print(html4)
         finish_button.click()
 
         time.sleep(15)
