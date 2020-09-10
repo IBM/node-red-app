@@ -84,13 +84,9 @@ try:
         print("Navigating to end of wizard")
         next_button.click()  # go to next panel
         next_button.click()  # skip learning panel
-        time.sleep(10)
-        print("Checking page source for 'Finish' button after waiting 10 secs...")
-        html = driver.page_source
-        print(html)
 
         print("Finishing setup wizard")
-        finish_button = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.ID, "btn-finish")))
+        finish_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "btn-finish")))
         finish_button.click()
 
         time.sleep(15)
