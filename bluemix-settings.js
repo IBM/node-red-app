@@ -18,8 +18,9 @@ var path = require("path");
 var util = require("util");
 var fs = require("fs");
 
-var cfenv = require("cfenv");
-var appEnv = cfenv.getAppEnv();
+const IBMCloudEnv = require('ibm-cloud-env');
+IBMCloudEnv.init('/server/config/mappings.json');
+const cloudantUrl = IBMCloudEnv.getString('cloudant_url');
 
 const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
 const REGEX_ALPHA_NUM = /[^a-zA-Z0-9]/g;
@@ -86,54 +87,21 @@ var settings = module.exports = {
     }
 };
 
-
-
-// Identify the Cloudant storage instance the application should be using.
-var storageServiceName;
-var storageServiceDetails;
-
-
-if (process.env.NODE_RED_STORAGE_NAME) {
-    // A service has been identifed by the NODE_RED_STORAGE_NAME env var.
-    //  - check to see if the named service exists
-    storageServiceDetails = appEnv.getService(process.env.NODE_RED_STORAGE_NAME);
-    if (!storageServiceDetails) {
-        util.log("Failed to find Cloudant service: "+process.env.NODE_RED_STORAGE_NAME+ " (NODE_RED_STORAGE_NAME)");
-    } else {
-        storageServiceName = process.env.NODE_RED_STORAGE_NAME
-    }
-} else {
-    // No couch service specified by env var - look at the attached services
-    var candidateServices = Object.values(appEnv.getServices()).filter(app => app.label === "cloudantNoSQLDB");
-    if (candidateServices.length === 0) {
-        util.log("No Cloudant service found");
-    } else {
-        // Use the first in the list - but warn if there are multiple incase we
-        // are using the 'wrong' one.
-        storageServiceName = candidateServices[0].name;
-        storageServiceDetails = candidateServices[0];
-        if (candidateServices.length > 1) {
-            util.log("Multiple Cloudant services found - using "+storageServiceName+". Use NODE_RED_STORAGE_NAME env var to specify the required instance.");
-        }
-    }
-}
-
-if (!storageServiceName) {
-    // No suitable service has been found. Fall back to localfilesystem storage
-    util.log("Falling back to localfilesystem storage. Changes will *not* be saved across application restarts.");
+if (!cloudantUrl) {
+    util.log("Failed to find the Cloudant URL");
+    util.log("Falling back to local filesystem storage. Changes will *not* be saved across application restarts.");
 } else {
     // Set the Cloudant storage module settings
     settings.cloudantService = {
         // The name of the service instance to use.
-        name: storageServiceName,
+        name: process.env.NODE_RED_STORAGE_NAME || "cloudant",
         // The URL to use
-        url: storageServiceDetails.credentials.url,
+        url: cloudantUrl,
         // The name of the database to use
-        db: process.env.NODE_RED_STORAGE_DB_NAME || _sanitizeAppName(appEnv.name),
+        db: process.env.NODE_RED_STORAGE_DB_NAME || "nodered",
         // The prefix for all document names stored by this instance.
-        prefix: process.env.NODE_RED_STORAGE_APP_NAME || _sanitizeAppName(appEnv.name)
+        prefix: process.env.NODE_RED_STORAGE_APP_NAME || "nodered"
     }
-
-    util.log("Using Cloudant service: "+storageServiceName+" db:"+settings.cloudantService.db+" prefix:"+settings.cloudantService.prefix);
+    util.log("Using Cloudant service: "+settings.cloudantService.name+" db:"+settings.cloudantService.db+" prefix:"+settings.cloudantService.prefix);
     settings.storageModule = require("./cloudantStorage");
 }

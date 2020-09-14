@@ -43,7 +43,7 @@ def validate_landing_page():
 username = "devx-skit-governance"
 if "PAGERDUTY_API_TOKEN" in os.environ:
     # using a secured environment variable to avoid exposure
-    password =  os.environ["PAGERDUTY_API_TOKEN"]
+    password = os.environ["PAGERDUTY_API_TOKEN"]
 else:
     password = "governator"
 
@@ -53,7 +53,7 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(options=options)
 try:
-    driver.get(os.environ["APP_URL"]); # Open a browser to the app's landing page
+    driver.get(os.environ["APP_URL"]);  # Open a browser to the app's landing page
 
     is_setup_wizard = False
     h3_elems = driver.find_elements_by_xpath('//h3')
@@ -61,29 +61,32 @@ try:
         if elem.text == "Welcome to your new Node-RED instance on IBM Cloud":
             is_setup_wizard = True
             break
-    
+
     if is_setup_wizard:
         print("Encountered initial setup wizard")
-        next_button = driver.find_element_by_xpath("//button[@id='btn-next']") # Locate the Next button
+        next_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "btn-next")))
         next_button.click()
 
         # set up as secure
         print("Setting up app with security enabled")
-        secure_editor_radio_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-next")))
+        secure_editor_radio_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "secureOption-enabled")))
         secure_editor_radio_button.click()
 
         print("Entering username and password")
-        username_field = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "secureOption-username")))
+        username_field = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "secureOption-username")))
         username_field.send_keys(username)
-        password_field = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "secureOption-password")))
+        password_field = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "secureOption-password")))
         password_field.send_keys(password)
 
         print("Navigating to end of wizard")
-        next_button.click() # go to next panel
-        next_button.click() # skip learning panel
+        next_button.click()  # go to next panel
+        next_button.click()  # skip learning panel
 
         print("Finishing setup wizard")
-        finish_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "btn-finish")))
+        finish_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "btn-finish")))
         finish_button.click()
 
         time.sleep(15)
