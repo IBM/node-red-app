@@ -20,7 +20,7 @@ var fs = require("fs");
 
 const IBMCloudEnv = require('ibm-cloud-env');
 IBMCloudEnv.init('/server/config/mappings.json');
-var cloudantUrl = IBMCloudEnv.getString('cloudant_url');
+const cloudantUrl = IBMCloudEnv.getString('cloudant_url');
 
 const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
 const REGEX_ALPHA_NUM = /[^a-zA-Z0-9]/g;
