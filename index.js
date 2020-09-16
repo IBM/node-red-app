@@ -17,6 +17,7 @@
 var bcrypt = require("bcrypt");
 var util = require("util");
 var path = require("path");
+var RED = require('node-red');
 
 util.log("Starting Node-RED on IBM Cloud bootstrap");
 util.log("Loading bluemix-settings.js");
@@ -130,5 +131,5 @@ function startNodeRED(config) {
             util.log("Disabled anonymous read-only access - set NODE_RED_GUEST_ACCESS to 'true' to enable");
         }
     }
-    require('./node_modules/node-red/red.js');
+    require('./red.js');
 }
