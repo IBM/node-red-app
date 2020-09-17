@@ -131,5 +131,5 @@ function startNodeRED(config) {
             util.log("Disabled anonymous read-only access - set NODE_RED_GUEST_ACCESS to 'true' to enable");
         }
     }
-    require('./red.js');
+    require('./red.js')(settings);
 }
