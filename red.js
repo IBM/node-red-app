@@ -27,11 +27,6 @@ module.exports = function(settings) {
   if (process.env.NODE_RED_ENABLE_SAFE_MODE && !/^false$/i.test(process.env.NODE_RED_ENABLE_SAFE_MODE)) {
     settings.safeMode = true;
   }
-  if (process.env.NODE_RED_ENABLE_PROJECTS) {
-    settings.editorTheme = settings.editorTheme || {};
-    settings.editorTheme.projects = settings.editorTheme.projects || {};
-    settings.editorTheme.projects.enabled = !/^false$/i.test(process.env.NODE_RED_ENABLE_PROJECTS);
-  }
 
   // Delay logging of (translated) messages until the RED object has been initialized
   var delayedLogItems = [];
