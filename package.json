@@ -1,6 +1,6 @@
 {
     "name": "node-red-app",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "dependencies": {
         "@cloudant/cloudant": "^4.2.4",
         "bcrypt": "^5.0.0",
@@ -12,7 +12,8 @@
         "node-red-node-cf-cloudant": "0.x",
         "node-red-node-openwhisk": "0.x",
         "node-red-node-watson": "0.x",
-        "node-red-nodes-cf-sqldb-dashdb": "0.x"
+        "node-red-nodes-cf-sqldb-dashdb": "0.x",
+        "node-red-contrib-ibm-db2": "0.x"
     },
     "scripts": {
         "start": "node --max-old-space-size=160 index.js --settings ./bluemix-settings.js -v"
