@@ -18,5 +18,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-    - run: npm start
-    - run: scripts/experience_test.sh
+    - run: npm run test
