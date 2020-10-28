@@ -19,5 +19,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: nohup bash -c "npm start 2>&1 &" && sleep 5
-    - run: cd scripts
-    - run: ./experience_test.sh
+    - run: npm run test
