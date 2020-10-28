@@ -3,7 +3,7 @@ const request = require('supertest');
 
 const expect = chai.expect;
 
-const server = require('../../red')
+const server = require('../../red');
 
 // example functional tests of routes
 describe('GET /', () => {
@@ -14,20 +14,8 @@ describe('GET /', () => {
       .expect(200)
       .then(response => {
         expect(response.text).to.include(
-          'Welcome to your new Node-RED instance on IBM Cloud',
+          'Welcome to Node-RED',
         );
-      });
-  });
-});
-
-describe('GET /health', () => {
-  it('responds with json', () => {
-    return request(server)
-      .get('/health/')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', 'application/json; charset=utf-8')
-      .expect(200, {
-        status: 'UP',
       });
   });
 });
