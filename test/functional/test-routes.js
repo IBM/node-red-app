@@ -2,8 +2,8 @@ const chai = require('chai');
 const request = require('supertest');
 
 const expect = chai.expect;
-let server;
-server = require('../../red')
+
+const server = require('../../red')
 
 // example functional tests of routes
 describe('GET /', () => {
