@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 nohup bash -c "npm start 2>&1 &" && sleep 5
 echo "Checking '/' page..."
