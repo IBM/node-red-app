@@ -251,7 +251,7 @@ module.exports = function(settings) {
       } else {
         RED.log.info(RED.log._("server.headless-mode"));
       }
-    }).otherwise(function(err) {
+    }).catch(function(err) {
       RED.log.error(RED.log._("server.failed-to-start"));
       if (err.stack) {
         RED.log.error(err.stack);
