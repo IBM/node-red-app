@@ -1,24 +1,24 @@
 {
-  "name": "node-red-app",
-  "version": "1.1.2",
-  "scripts": {
-    "start": "node --max-old-space-size=160 index.js --settings ./bluemix-settings.js -v"
-  },
-  "dependencies": {
-    "@cloudant/cloudant": "^4.2.4",
-    "bcrypt": "^5.0.0",
-    "body-parser": "1.x",
-    "ibm-cloud-env": "^0",
-    "express": "4.x",
-    "http-shutdown": "1.2.2",
-    "node-red": "1.x",
-    "node-red-node-cf-cloudant": "0.x",
-    "node-red-node-openwhisk": "0.x",
-    "node-red-node-watson": "0.x",
-    "node-red-nodes-cf-sqldb-dashdb": "0.x",
-    "node-red-contrib-ibm-db2": "0.x"
-  },
-  "engines": {
-    "node": "12.x"
-  }
+    "name": "node-red-app",
+    "version": "1.1.3",
+    "dependencies": {
+        "@cloudant/cloudant": "^4.2.4",
+        "bcrypt": "^5.0.0",
+        "body-parser": "1.x",
+        "ibm-cloud-env": "^0",
+        "express": "4.x",
+        "http-shutdown": "1.2.2",
+        "node-red": "1.x",
+        "node-red-node-cf-cloudant": "0.x",
+        "node-red-node-openwhisk": "0.x",
+        "node-red-node-watson": "0.x",
+        "node-red-nodes-cf-sqldb-dashdb": "0.x",
+        "node-red-contrib-ibm-db2": "0.x"
+    },
+    "scripts": {
+        "start": "node --max-old-space-size=160 index.js --settings ./bluemix-settings.js -v"
+    },
+    "engines": {
+        "node": "12.x"
+    }
 }
