@@ -8,7 +8,7 @@
         "ibm-cloud-env": "^0",
         "express": "4.x",
         "http-shutdown": "1.2.2",
-        "node-red": "1.x",
+        "node-red": "1.2.6",
         "node-red-node-cf-cloudant": "0.x",
         "node-red-node-openwhisk": "0.x",
         "node-red-node-watson": "0.x",
