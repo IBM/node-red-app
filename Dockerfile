@@ -1,4 +1,6 @@
-FROM registry.access.redhat.com/ubi8/ubi
+FROM registry.access.redhat.com/ubi8:8.3
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash -
 RUN yum install -y nodejs make gcc-c++
 RUN mkdir /app
