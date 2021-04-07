@@ -98,7 +98,7 @@ if (!cloudantUrl) {
         // The URL to use
         url: cloudantUrl,
         // The name of the database to use
-        db: process.env.NODE_RED_STORAGE_DB_NAME || "nodered",
+        db: process.env.NODE_RED_STORAGE_DB_NAME || IBMCloudEnv.getString('application_name') || "nodered",
         // The prefix for all document names stored by this instance.
         prefix: process.env.NODE_RED_STORAGE_APP_NAME || "nodered"
     }
