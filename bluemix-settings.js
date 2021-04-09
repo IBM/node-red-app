@@ -30,6 +30,8 @@ function _sanitizeAppName(name) {
     return name.toLowerCase().replace(REGEX_LEADING_ALPHA, '').replace(REGEX_ALPHA_NUM, '');
 }
 
+var dbName = _sanitizeAppName(process.env.NODE_RED_STORAGE_DB_NAME || IBMCloudEnv.getString('application_name') || "nodered");
+
 var userDir = path.join(__dirname,".node-red");
 // Ensure userDir exists - something that is normally taken care of by
 // localfilesystem storage when running locally
@@ -98,7 +100,7 @@ if (!cloudantUrl) {
         // The URL to use
         url: cloudantUrl,
         // The name of the database to use
-        db: process.env.NODE_RED_STORAGE_DB_NAME || IBMCloudEnv.getString('application_name') || "nodered",
+        db: dbName,
         // The prefix for all document names stored by this instance.
         prefix: process.env.NODE_RED_STORAGE_APP_NAME || "nodered"
     }
