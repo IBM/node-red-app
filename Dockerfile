@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/nodejs-14:latest
+FROM registry.access.redhat.com/ubi8/nodejs-14:1
 RUN mkdir /app
 WORKDIR /app
 COPY package.json /app
