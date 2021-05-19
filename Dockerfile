@@ -5,7 +5,7 @@ RUN mkdir -p /opt/app-root/src
 WORKDIR /opt/app-root/src
 COPY package.json /opt/app-root/src
 RUN npm install --only=prod
-COPY public /opt/app-root/src/public
+COPY . .
 
 ENV NODE_ENV production
 ENV PORT 3000
