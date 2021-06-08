@@ -10,7 +10,6 @@
         "ibm-cloud-env": "^0",
         "node-red": "^1.3.5",
         "node-red-contrib-ibm-db2": "0.x",
-        "node-red-node-cf-cloudant": "0.x",
         "node-red-node-openwhisk": "0.x",
         "node-red-node-watson": "0.x",
         "node-red-nodes-cf-sqldb-dashdb": "0.x"
