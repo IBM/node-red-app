@@ -11,7 +11,7 @@ RUN npm install --no-audit --no-update-notifier --no-fund --production
 COPY . .
 
 ## Release image
-FROM registry.access.redhat.com/ubi8/nodejs-14-minimal:latest
+FROM registry.access.redhat.com/ubi8/nodejs-14-minimal:1
 
 COPY --from=build /opt/app-root/src /opt/app-root/src/
 
