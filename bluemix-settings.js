@@ -21,6 +21,7 @@ var fs = require("fs");
 const IBMCloudEnv = require('ibm-cloud-env');
 IBMCloudEnv.init('/server/config/mappings.json');
 const cloudantUrl = IBMCloudEnv.getString('cloudant_url');
+const cloudantApiKey = IBMCloudEnv.getString('cloudant_apikey');
 
 const REGEX_LEADING_ALPHA = /^[^a-zA-Z]*/;
 const REGEX_ALPHA_NUM = /[^a-zA-Z0-9]/g;
@@ -102,8 +103,11 @@ if (!cloudantUrl) {
         // The name of the database to use
         db: dbName,
         // The prefix for all document names stored by this instance.
-        prefix: process.env.NODE_RED_STORAGE_APP_NAME || "nodered"
+        prefix: process.env.NODE_RED_STORAGE_APP_NAME || "nodered",
+        // The apikey for IAM
+        iamApiKey: cloudantApiKey
     }
+    
     util.log("Using Cloudant service: "+settings.cloudantService.name+" db:"+settings.cloudantService.db+" prefix:"+settings.cloudantService.prefix);
     settings.storageModule = require("./cloudantStorage");
 }
