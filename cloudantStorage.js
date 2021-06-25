@@ -77,9 +77,8 @@ var cloudantStorage = {
             err.catch(err => {});
             return err;
         }
-        // This is resulting in Access Denined errors when using IAM
-        //var couchDb = Cloudant({ vcapInstanceName: settings.name, vcapServices: JSON.parse(process.env.VCAP_SERVICES) });
-        var couchDb = Cloudant(settings.url);
+        
+        var couchDb = Cloudant({ url: settings.url, plugins: { iamauth: { iamApiKey: settings.iamApiKey } } });
 
         appname = settings.prefix || require('os').hostname();
         var dbname = settings.db || "nodered";
