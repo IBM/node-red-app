@@ -1,11 +1,11 @@
-FROM node:14
+FROM registry.access.redhat.com/ubi8/nodejs-14:1
 
 ENV PORT 3000
 ENV NODE_HEAPDUMP_OPTIONS nosignal
 EXPOSE 3000
 EXPOSE 9229
 
-RUN mkdir -p /opt/app-root/src
+RUN mkdir /opt/app-root/src
 WORKDIR /opt/app-root/src
 COPY . /opt/app-root/src
 
