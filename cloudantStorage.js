@@ -16,10 +16,9 @@
 
  const {CloudantV1} = require("@ibm-cloud/cloudant");
 
- //var util = require('util');
  var fs = require('fs');
  
- const CLIENT = CloudantV1.newInstance({});
+ const client = CloudantV1.newInstance({});
  
  var dbname;
  var settings;
@@ -28,19 +27,19 @@
  var currentSettingsRev = null;
  var currentCredRev = null;
  
- //var libraryCache = {};
+ var libraryCache = {};
  
  function prepopulateFlows(resolve) {
      var key = appname + "/" + "flow";
  
-     CLIENT.getDocument({
+     client.getDocument({
          db: dbname,
          docId: key,
      })
-     .then((getDocumentResponse) => {
+     .then(getDocumentResponse => {
          resolve();
      })
-     .catch((err) => {
+     .catch(err => {
          var promises = [];
          if (fs.existsSync(__dirname + "/defaults/flow.json")) {
              try {
@@ -88,15 +87,14 @@
          dbname = settings.db || "nodered";
  
          return new Promise(function (resolve, reject) {
-             CLIENT.getDatabaseInformation({ db: dbname })
-             .then((dbInfo) => {
+             client.getDatabaseInformation({ db: dbname })
+             .then(dbInfo => {
                  prepopulateFlows(resolve);
              })
-             .catch((err) => {
-                 console.log(err);
-                 CLIENT
+             .catch(err => {
+                 client
                  .putDatabase({ db: dbname })
-                 .then((putDatabaseResult) => {
+                 .then(putDatabaseResult => {
                      if (putDatabaseResult.result.ok) {
                          console.log(`"${dbname}" database created."`);
                      }
@@ -137,18 +135,18 @@
                                                  }
                                              };
                                              
-                     CLIENT.postDocument({
+                     client.postDocument({
                          db: dbname,
                          document: viewDocument,  
                      })
-                     .then((documentResponse) => {
+                     .then(postDocumentResponse => {
                          prepopulateFlows(resolve);
                      })
-                     .catch((err) => {
+                     .catch(err => {
                          reject("Failed to create view: " + err);
                      });
                  })
-                 .catch((err) => {
+                 .catch(err => {
                      if (err.code === 412) {
                          console.log(
                              'Cannot create "' + dbname + '" database, it already exists.'
@@ -163,16 +161,16 @@
      getFlows: function () {
          var key = appname + "/" + "flow";
          return new Promise(function (resolve, reject) {
-             CLIENT.getDocument({
+             client.getDocument({
                  db: dbname,
                  docId: key,
              })
-             .then((getDocumentResponse) => {
+             .then(getDocumentResponse => {
                  let document = getDocumentResponse.result;
                  currentFlowRev = document._rev;
                  resolve(document.flow);
              })
-             .catch((err) => {
+             .catch(err => {
                  if (err.status != 404) {
                      reject(err.toString());
                  } else {
@@ -190,16 +188,16 @@
                  doc._rev = currentFlowRev;
              }
  
-             CLIENT.postDocument({
+             client.postDocument({
                  db: dbname,
                  document: doc,
              })
-             .then((postDocumentResponse) => {
+             .then(postDocumentResponse => {
                  let document = postDocumentResponse.result;
                  currentFlowRev = document.rev;
                  resolve();
              })
-             .catch((err) => {
+             .catch(err => {
                  reject(err.toString());
              });
          });
@@ -208,16 +206,16 @@
      getCredentials: function () {
          var key = appname + "/" + "credential";
          return new Promise(function (resolve, reject) {
-             CLIENT.getDocument({
+             client.getDocument({
                  db: dbname,
                  docId: key,
              })
-             .then((getDocumentResponse) => {
+             .then(getDocumentResponse => {
                  let document = getDocumentResponse.result;
                  currentCredRev = document._rev;
                  resolve(document.credentials);
              })
-             .catch((err) => {
+             .catch(err => {
                  if (err.status != 404) {
                      reject(err.toString());
                  } else {
@@ -234,16 +232,16 @@
              if (currentCredRev) {
                  doc._rev = currentCredRev;
              }
-             CLIENT.postDocument({
+             client.postDocument({
                  db: dbname,
                  document: doc,
              })
-             .then((postDocumentResponse) => {
+             .then(postDocumentResponse => {
                  let document = postDocumentResponse.result;
                  currentCredRev = document.rev;
                  resolve();
              })
-             .catch((err) => {
+             .catch(err => {
                  reject(err.toString());
              })
          });
@@ -252,16 +250,16 @@
      getSettings: function () {
          var key = appname + "/" + "settings";
          return new Promise(function (resolve, reject) {
-             CLIENT.getDocument({
+             client.getDocument({
                  db: dbname,
                  docId: key,
              })
-             .then((getDocumentResponse) => {
+             .then(getDocumentResponse => {
                  let response = getDocumentResponse.result
                  currentSettingsRev = response._rev;
                  resolve(response.settings);
              })
-             .catch((err) => {
+             .catch(err => {
                  if (err.status != 404) {
                      reject(err.toString());
                  } else {
@@ -279,15 +277,15 @@
                  doc._rev = currentSettingsRev;
              }
  
-             CLIENT.postDocument({
+             client.postDocument({
                  db: dbname,
                  document: doc,
              })
-             .then((postDocumentResponse) => {
+             .then(postDocumentResponse => {
                  currentSettingsRev = postDocumentResponse.result.rev;
                  resolve();
              })
-             .catch((err) => {
+             .catch(err => {
                  reject(err.toString());
              });
  
@@ -296,41 +294,39 @@
          });
      },
      
-     // Unused code?
-     
-     /*
      getAllFlows: function () {
-         var key = [appname, "flow"];
          return new Promise(function (resolve, reject) {
-             CLIENT.getDocument({
-                 db: dbname,
-                 docId: "_design/library"
-             })
-             .then((getDocumentResponse) => {
-                 console.log(getDocumentResponse);
-             })
- 
-             flowDb.view('library', 'flow_entries_by_app_and_type', { key: key }, function (e, data) {
-                 if (e) {
-                     reject(e.toString());
-                 } else {
-                     var result = {};
-                     for (var i = 0; i < data.rows.length; i++) {
-                         var doc = data.rows[i];
-                         var path = doc.value.path;
-                         var parts = path.split("/");
-                         var ref = result;
-                         for (var j = 0; j < parts.length - 1; j++) {
-                             ref['d'] = ref['d'] || {};
-                             ref['d'][parts[j]] = ref['d'][parts[j]] || {};
-                             ref = ref['d'][parts[j]];
-                         }
-                         ref['f'] = ref['f'] || [];
-                         ref['f'].push(parts.slice(-1)[0]);
-                     }
-                     resolve(result);
-                 }
-             });
+            client.getDocument({
+                db: dbname,
+                docId: "_design/library"
+            })
+            .then(getDocumentResponse => {
+                client.postView({
+                    db: dbname,
+                    ddoc: 'library',
+                    view: 'flow_entries_by_app_and_type',
+                })
+                .then(postViewResponse => {
+                    var result = {};
+                    for (var i = 0; i < data.rows.length; i++) {
+                        var doc = postViewResponse.rows[i];
+                        var path = doc.value.path;
+                        var parts = path.split("/");
+                        var ref = result;
+                        for (var j = 0; j < parts.length - 1; j++) {
+                            ref['d'] = ref['d'] || {};
+                            ref['d'][parts[j]] = ref['d'][parts[j]] || {};
+                            ref = ref['d'][parts[j]];
+                        }
+                        ref['f'] = ref['f'] || [];
+                        ref['f'].push(parts.slice(-1)[0]);
+                    }
+                    resolve(result);
+                })
+                .catch(err => {
+                    reject(err.toString());
+                })
+            });
          });
      },
  
@@ -340,15 +336,15 @@
          }
          var key = appname + "/lib/flow" + fn;
          return new Promise(function (resolve, reject) {
-             CLIENT.getDocument({
+             client.getDocument({
                  db: dbname,
                  docId: key,
              })
-             .then((getDocumentResponse) => {
+             .then(getDocumentResponse => {
                  let document = getDocumentResponse.result;
                  resolve(document.flow);
              })
-             .catch((err) => {
+             .catch(err => {
                  reject(err);
              });
          });
@@ -362,24 +358,24 @@
          return new Promise(function (resolve, reject) {
              var doc = { _id: key, data: data };
  
-             CLIENT.getDocument({
+             client.getDocument({
                  db: dbname,
                  docId: key,
              })
-             .then((getDocumentResponse) => {
+             .then(getDocumentResponse => {
                  let oldFlow = getDocumentResponse.result;
  
                  doc._rev = oldFlow._rev    
              })
              .finally(() => {
-                 CLIENT.postDocument({
+                 client.postDocument({
                      db: dbname,
                      document: doc,
                  })
-                 .then((postDocumentResponse) => {
+                 .then(postDocumentResponse => {
                      resolve();
                  })   
-                 .catch((err) => {
+                 .catch(err => {
                      reject(err);
                  }); 
              });
@@ -398,43 +394,51 @@
          }
  
          return new Promise(function (resolve, reject) {
-             flowDb.get(key, function (err, doc) {
-                 if (err) {
-                     if (path.substr(-1, 1) == "/") {
-                         path = path.substr(0, path.length - 1);
-                     }
-                     var qkey = [appname, type, path];
-                     flowDb.view('library', 'lib_entries_by_app_and_type', { key: qkey }, function (e, data) {
-                         if (e) {
-                             reject(e);
-                         } else {
-                             var dirs = [];
-                             var files = [];
-                             for (var i = 0; i < data.rows.length; i++) {
-                                 var row = data.rows[i];
-                                 var value = row.value;
- 
-                                 if (value.dir) {
-                                     if (dirs.indexOf(value.dir) == -1) {
-                                         dirs.push(value.dir);
-                                     }
-                                 } else {
-                                     files.push(value);
-                                 }
-                             }
-                             libraryCache[key] = dirs.concat(files);
-                             resolve(libraryCache[key]);
-                         }
-                     });
-                 } else {
-                     libraryCache[key] = doc.body;
-                     resolve(doc.body);
-                 }
+            client.getDocument({
+                db: dbname,
+                docId: key,
+            })
+            .then(getDocumentResponse => {
+                let document = getDocumentResponse.result;
+                libraryCache[key] = document.body;
+                resolve(document.body);
+            })
+            .catch(err => {
+                if (path.substr(-1, 1) == "/") {
+                    path = path.substr(0, path.length - 1);
+                }
+
+                client.postView({
+                    db: dbname,
+                    ddoc: 'library',
+                    view: 'lib_entries_by_app_and_type',
+                })
+                .then(postViewResponse => {
+                    var dirs = [];
+                        var files = [];
+                        for (var i = 0; i < postViewResponse.rows.length; i++) {
+                            var row = postViewResponse.rows[i];
+                            var value = row.value;
+
+                            if (value.dir) {
+                                if (dirs.indexOf(value.dir) == -1) {
+                                    dirs.push(value.dir);
+                                }
+                            } else {
+                                files.push(value);
+                            }
+                        }
+                        libraryCache[key] = dirs.concat(files);
+                        resolve(libraryCache[key]);
+                })
+                .catch(err => {
+                    reject(err);
+                });
              });
          });
      },
+
      saveLibraryEntry: function (type, path, meta, body) {
- 
          var p = path.split("/");    // strip multiple slash
          p = p.filter(Boolean);
          path = p.slice(0, p.length).join("/")
@@ -442,30 +446,39 @@
          if (path != "" && path.substr(0, 1) != "/") {
              path = "/" + path;
          }
+
          var key = appname + "/lib/" + type + path;
          return new Promise(function (resolve, reject) {
-             var doc = { _id: key, meta: meta, body: body };
-             flowDb.get(key, function (err, d) {
-                 if (d) {
-                     doc._rev = d._rev;
-                 }
-                 flowDb.insert(doc, function (err, d) {
-                     if (err) {
-                         reject(err);
-                     } else {
-                         var p = path.split("/");
-                         for (var i = 0; i < p.length; i++) {
-                             delete libraryCache[appname + "/lib/" + type + (p.slice(0, i).join("/"))]
-                         }
-                         libraryCache[key] = body;
-                         resolve();
-                     }
-                 });
-             });
- 
+            var doc = { _id: key, meta: meta, body: body };
+
+            // Update revision id of doc if already exists
+            client.getDocument({
+                db: dbname,
+                docId: key,
+            })
+            .then(getDocumentResponse => {
+                let document = getDocumentResponse.result;
+                doc._rev = document._rev;
+            })
+            .finally(
+                client.postDocument({
+                    db: dbname,
+                    document: doc,
+                })
+                .then(postDocumentResponse => {
+                    var p = path.split("/");
+                    for (var i = 0; i < p.length; i++) {
+                        delete libraryCache[appname + "/lib/" + type + (p.slice(0, i).join("/"))]
+                    }
+                    libraryCache[key] = body;
+                    resolve();
+                })
+                .catch(err => {
+                    reject(err);
+                })
+            );
          });
      }
-     */
  };
  
  module.exports = cloudantStorage;
