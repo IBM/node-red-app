@@ -15,7 +15,6 @@
  **/
 
 // import dependencies
-const IBMCloudEnv = require('ibm-cloud-env');
 const { NoAuthAuthenticator } = require('ibm-cloud-sdk-core');
 const { CloudantV1 } = require("@ibm-cloud/cloudant");
 
