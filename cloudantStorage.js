@@ -107,9 +107,7 @@ var cloudantStorage = {
                             db: dbname
                         })
                         .then(putDatabaseResult => {
-                            if (putDatabaseResult.result.ok) {
-                                console.log(`"${dbname}" database created."`);
-                            }
+                            console.log(`"${dbname}" database created."`);
 
                             const viewDocument = {
                                 _id: "_design/library"
