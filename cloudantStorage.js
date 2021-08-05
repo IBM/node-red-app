@@ -21,14 +21,7 @@ const { CloudantV1 } = require("@ibm-cloud/cloudant");
 
 var fs = require('fs');
 
-const cloudant_url = IBMCloudEnv.getString('cloudant_url');
-
-const client = CloudantV1.newInstance({
-    authenticator: new NoAuthAuthenticator({}),
-});
-
-client.setServiceUrl(cloudant_url);
-
+var client;
 var dbname;
 var settings;
 var appname;
@@ -94,6 +87,13 @@ var cloudantStorage = {
 
         appname = settings.prefix || require('os').hostname();
         dbname = settings.db || "nodered";
+        url = settings.url;
+
+        client = CloudantV1.newInstance({
+            authenticator: new NoAuthAuthenticator({}),
+        });
+        
+        client.setServiceUrl(url);
 
         return new Promise(function (resolve, reject) {
             client.getDatabaseInformation({
