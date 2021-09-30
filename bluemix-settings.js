@@ -15,7 +15,6 @@
  **/
 
 var path = require("path");
-var util = require("util");
 var fs = require("fs");
 
 const IBMCloudEnv = require('ibm-cloud-env');
@@ -90,8 +89,8 @@ var settings = module.exports = {
 };
 
 if (!cloudantUrl) {
-    util.log("Failed to find the Cloudant URL");
-    util.log("Falling back to local filesystem storage. Changes will *not* be saved across application restarts.");
+    console.log("Failed to find the Cloudant URL");
+    console.log("Falling back to local filesystem storage. Changes will *not* be saved across application restarts.");
 } else {
     // Set the Cloudant storage module settings
     settings.cloudantService = {
@@ -104,6 +103,6 @@ if (!cloudantUrl) {
         // The prefix for all document names stored by this instance.
         prefix: process.env.NODE_RED_STORAGE_APP_NAME || "nodered"
     }
-    util.log("Using Cloudant service: "+settings.cloudantService.name+" db:"+settings.cloudantService.db+" prefix:"+settings.cloudantService.prefix);
+    console.log("Using Cloudant service: "+settings.cloudantService.name+" db:"+settings.cloudantService.db+" prefix:"+settings.cloudantService.prefix);
     settings.storageModule = require("./cloudantStorage");
 }
