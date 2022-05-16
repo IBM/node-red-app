@@ -1,0 +1,6 @@
+{
+	"name": "node-red-ce-tmp",
+	"version": "1.0.0",
+	"description": "Temporary package.json for Node-RED on Code Engine",
+	"author": "IBM"
+}

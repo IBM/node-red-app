@@ -4,11 +4,12 @@ RUN  dnf module install --nodocs -y nodejs:14 python39 --setopt=install_weak_dep
     && dnf install --nodocs -y make gcc gcc-c++  --setopt=install_weak_deps=0 --disableplugin=subscription-manager \
     && dnf clean all --disableplugin=subscription-manager
     
-RUN mkdir -p /opt/app-root/src
+RUN mkdir -p /opt/app-root/src; mkdir /opt/app-root/src/.node-red
 WORKDIR /opt/app-root/src
 COPY package.json /opt/app-root/src
 RUN npm install --no-audit --no-update-notifier --no-fund --production
 COPY . .
+RUN mv node-red-package-json.txt /opt/app-root/src/.node-red/package.json
 
 ## Release image
 FROM registry.access.redhat.com/ubi8/nodejs-14-minimal:1
