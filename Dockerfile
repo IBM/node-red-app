@@ -9,7 +9,7 @@ WORKDIR /opt/app-root/src
 COPY package.json /opt/app-root/src
 RUN npm install --no-audit --no-update-notifier --no-fund --production
 COPY . .
-RUN mkdir -p /opt/app-root/src/.node-red; mv node-red-package-json.txt /opt/app-root/src/.node-red/package.json; chmod 777 /opt/app-root/src/.node-red
+RUN mkdir -p /opt/app-root/src/.node-red; mv defaults/code-engine-package.json /opt/app-root/src/.node-red/package.json; chmod 777 /opt/app-root/src/.node-red
 
 ## Release image
 FROM registry.access.redhat.com/ubi8/nodejs-14-minimal:1
