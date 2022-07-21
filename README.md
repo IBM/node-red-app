@@ -61,9 +61,6 @@ configuration settings can be set in `bluemix-settings.js`.
 If you do clone this repository, make sure you update this `README.md` file to point
 the `Deploy to IBM Cloud` button at your repository.
 
-If you want to change the name of the Cloudant instance that gets created, the memory
-allocated to the application or other deploy-time options, have a look in `manifest.yml`.
-
 ### Environment Variables
 
 The following environment variables can be used to configure the application:
