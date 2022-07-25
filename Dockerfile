@@ -8,7 +8,7 @@ RUN npm install --global npm@8.15.0
 RUN mkdir -p /opt/app-root/src
 WORKDIR /opt/app-root/src
 COPY package.json /opt/app-root/src
-RUN npm install --no-audit --no-update-notifier --no-fund --production
+RUN npm install --no-audit --no-update-notifier --no-fund --omit=dev
 COPY . .
 
 ## Release image
