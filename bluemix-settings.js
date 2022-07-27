@@ -31,7 +31,7 @@ function _sanitizeAppName(name) {
 
 var dbName = _sanitizeAppName(process.env.NODE_RED_STORAGE_DB_NAME || IBMCloudEnv.getString('application_name') || "nodered");
 
-var userDir = path.join(__dirname,".node-red");
+var userDir = __dirname
 // Ensure userDir exists - something that is normally taken care of by
 // localfilesystem storage when running locally
 if(!fs.existsSync(userDir)) fs.mkdirSync(userDir);
