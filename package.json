@@ -4,16 +4,16 @@
     "dependencies": {
         "@ibm-cloud/cloudant": "^0.1.4",
         "bcrypt": "^5.0.1",
-        "body-parser": "1.x",
-        "express": "4.x",
+        "body-parser": "^1",
+        "express": "^4",
         "http-shutdown": "1.2.2",
         "ibm-cloud-env": "^0",
         "node-red": "^3.0.1",
-        "node-red-contrib-ibm-db2": "0.x",
-        "node-red-node-cf-cloudant": "0.x",
-        "node-red-node-openwhisk": "0.x",
-        "node-red-node-watson": "0.x",
-        "node-red-nodes-cf-sqldb-dashdb": "0.x"
+        "node-red-contrib-ibm-db2": "^0",
+        "node-red-node-cf-cloudant": "^0",
+        "node-red-node-openwhisk": "^0",
+        "node-red-node-watson": "^0",
+        "node-red-nodes-cf-sqldb-dashdb": "^0"
     },
     "scripts": {
         "start": "node --max-old-space-size=160 index.js --settings ./bluemix-settings.js -v"
