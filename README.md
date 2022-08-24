@@ -76,3 +76,4 @@ The following environment variables can be used to configure the application:
  - `NODE_RED_GUEST_ACCESS` - if the editor is secured, this will allow anonymous,
     read-only access
  - `NODE_RED_USE_APPMETRICS` - enables the appmetrics dashboard
+
