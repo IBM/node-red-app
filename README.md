@@ -22,7 +22,7 @@ This repository is an example Node-RED application that can be deployed into
 IBM Cloud with only a couple clicks. Try it out for yourself right now by clicking:
 
 <p align="center">
-    <a href="https://cloud.ibm.com/developer/appservice/starter-kits/nodered">
+    <a href="https://cloud.ibm.com/developer/appservice/create-app?starterKit=59c9d5bd-4d31-3611-897a-f94eea80dc9f">
     <img src="https://cloud.ibm.com/devops/setup/deploy/button_x2.png" alt="Deploy to IBM Cloud">
     </a>
 </p>
