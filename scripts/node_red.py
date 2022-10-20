@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 def validate_landing_page():
     print("Checking if we've encountered the landing page")
     found_node_red_heading = False
-    h1_elems = driver.find_elements_by_xpath('//h1')
+    h1_elems = driver.find_elements(By.XPATH, '//h1')
     print("Found {} h1 elements".format(len(h1_elems)))
     for elem in h1_elems:
         if elem.text == "Node-RED":
@@ -19,14 +19,14 @@ def validate_landing_page():
             break
 
     found_node_red_subheading = False
-    h2_elems = driver.find_elements_by_xpath('//h2')
+    h2_elems = driver.find_elements(By.XPATH, '//h2')
     for elem in h2_elems:
         if elem.text == "Flow-based programming for the Internet of Things":
             found_node_red_subheading = True
             break
 
     found_editor_link = False
-    a_elems = driver.find_elements_by_xpath('//a')
+    a_elems = driver.find_elements(By.XPATH, '//a')
     for elem in a_elems:
         if elem.text == "Go to your Node-RED flow editor":
             found_editor_link = True
@@ -56,7 +56,7 @@ try:
     driver.get(os.environ["APP_URL"]);  # Open a browser to the app's landing page
 
     is_setup_wizard = False
-    h3_elems = driver.find_elements_by_xpath('//h3')
+    h3_elems = driver.find_elements(By.XPATH, '//h3')
     for elem in h3_elems:
         if elem.text == "Welcome to your new Node-RED instance on IBM Cloud":
             is_setup_wizard = True
