@@ -8,7 +8,7 @@
         "express": "4.x",
         "http-shutdown": "1.2.2",
         "ibm-cloud-env": "^0",
-        "node-red": "^2.2.2",
+        "node-red": "^3.0.2",
         "node-red-contrib-ibm-db2": "0.x",
         "node-red-node-cf-cloudant": "0.x",
         "node-red-node-openwhisk": "0.x",
