@@ -57,13 +57,15 @@ var settings = module.exports = {
 
     // Enable module reinstalls on start-up; this ensures modules installed
     // post-deploy are restored after a restage
-    autoInstallModules: true,
+    externalModules: {
+        autoInstall: true,
+    },
 
     // Move the admin UI
     httpAdminRoot: '/red',
 
     // Serve up the welcome page
-    httpStatic: path.join(__dirname,"public"),
+    httpStaticRoot: path.join(__dirname,"public"),
 
     functionGlobalContext: { },
 
