@@ -193,12 +193,12 @@ module.exports = function(settings) {
     if (settings.httpNodeRoot !== false) {
       app.use(settings.httpNodeRoot,RED.httpNode);
     }
-    if (settings.httpStatic) {
+    if (settings.httpStaticRoot) {
       settings.httpStaticAuth = settings.httpStaticAuth || settings.httpAuth;
       if (settings.httpStaticAuth) {
         app.use("/",basicAuthMiddleware(settings.httpStaticAuth.user,settings.httpStaticAuth.pass));
       }
-      app.use("/",express.static(settings.httpStatic));
+      app.use("/",express.static(settings.httpStaticRoot));
     }
 
     function getListenPath() {
@@ -212,14 +212,14 @@ module.exports = function(settings) {
       ':'+port;
       if (settings.httpAdminRoot !== false) {
         listenPath += settings.httpAdminRoot;
-      } else if (settings.httpStatic) {
+      } else if (settings.httpStaticRoot) {
         listenPath += "/";
       }
       return listenPath;
     }
 
     RED.start().then(function() {
-      if (settings.httpAdminRoot !== false || settings.httpNodeRoot !== false || settings.httpStatic) {
+      if (settings.httpAdminRoot !== false || settings.httpNodeRoot !== false || settings.httpStaticRoot) {
         server.on('error', function(err) {
           if (err.errno === "EADDRINUSE") {
             RED.log.error(RED.log._("server.unable-to-listen", {listenpath:getListenPath()}));
