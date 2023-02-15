@@ -1,3 +1,6 @@
+# WARNING: This repository is no longer maintained :warning:
+
+> This repository will not be updated. The repository will be kept available in read-only mode.
 <p align="center">
     <a href="https://cloud.ibm.com">
         <img src="https://cloud.ibm.com/media/docs/developer-appservice/resources/ibm-cloud.svg" height="100" alt="IBM Cloud">
@@ -14,33 +17,6 @@
 
 Node-RED IBM Cloud Starter Application
 ====================================
-
-
-### Node-RED on IBM Cloud
-
-This repository is an example Node-RED application that can be deployed into
-IBM Cloud with only a couple clicks. Try it out for yourself right now by clicking:
-
-<p align="center">
-    <a href="https://cloud.ibm.com/developer/appservice/create-app?starterKit=59c9d5bd-4d31-3611-897a-f94eea80dc9f">
-    <img src="https://cloud.ibm.com/devops/setup/deploy/button_x2.png" alt="Deploy to IBM Cloud">
-    </a>
-</p>
-
-### How does this work?
-
-When you click the button, you are taken to IBM Cloud where you get a pick a name
-for your application at which point the platform takes over, grabs the code from
-this repository and gets it deployed.
-
-It will automatically create an instance of the Cloudant service and bind it to
-your app. This is where your Node-RED instance will store its data.
-
-When you first access the application, you'll be asked to set some security options
-to ensure your flow editor remains secure from unauthorised access.
-
-It includes a set of default flows that are automatically deployed the first time
-Node-RED runs.
 
 ### Customising Node-RED
 
